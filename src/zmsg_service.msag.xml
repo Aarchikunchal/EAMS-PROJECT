@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZMSG_SERVICE</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>MSG CLASS FOR SRV</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Future Request Dates are not allowed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Invalid Priority. Please select a value from the value help.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>The entered Status &apos;&amp;1&apos; is not valid.Please select a valid Status.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>The entered AssetId &apos;&amp;1&apos; is invalid . Please select a valid Asset ID.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>The entered VendorId &apos;&amp;1&apos; is invalid . Please select a valid Vendor ID.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Invalid. Please select a value from the value help.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Contact number cannot be all zeros</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Contact number cannot start with 0</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Number must start with 6,7,8 or 9</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Invalid Email ID. It must contain both &apos;@&apos; and &apos;.&apos;</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>The entered AssetCategory &apos;&amp;1&apos; is invalid. Please select valid Category.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Purchase Date cannot be in future.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Warranty Date should be greater than Purchase Date</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>The entered Plant &apos;&amp;1&apos; is invalid . Please select a valid Plant.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>The entered Location &apos;&amp;1&apos; is invalid . Please select a valid Location.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT> Asset status &apos;&amp;1&apos; is not allowed for service request creation.</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,80 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: {
+    typeName: 'Vendor',
+    typeNamePlural: 'Vendors',
+    title: {
+      type: #STANDARD,
+      value: 'VendorName'
+    },
+    description: {
+      value: 'VendorId'
+    },
+    typeImageUrl: 'sap-icon://supplier'
+  }
+}
+
+annotate entity ZC_VENDOR_ with
+{
+
+  @UI.facet: [
+    {
+      id: 'VendorDetails',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Vendor Details',
+      position: 10
+    }
+  ]
+
+  @EndUserText.label: 'Vendor Id'
+  @UI.lineItem: [
+    { position: 10 },
+
+    {
+      type: #FOR_ACTION,
+      dataAction: 'Active',
+      label: 'Active',
+      position: 70
+    },
+
+    {
+      type: #FOR_ACTION,
+      dataAction: 'InActive',
+      label: 'InActive',
+      position: 80
+    }
+
+  ]
+  @UI.identification: [{ position: 10 }]
+  VendorId;
+
+  @EndUserText.label: 'Vendor Name'
+  @UI.lineItem: [{ position: 20 }]
+  @UI.identification: [{ position: 20 }]
+  @UI.selectionField: [{ position: 10 }]
+  VendorName;
+
+  @EndUserText.label: 'Contact Number'
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  ContactNumber;
+
+  @EndUserText.label: 'Email Id'
+  @UI.lineItem: [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  Email;
+
+  @EndUserText.label: 'Service Type'
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position: 50 }]
+  @UI.selectionField: [{ position: 30 }]
+  ServiceType;
+
+  @EndUserText.label: 'Status'
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 60 }]
+  Status;
+
+}

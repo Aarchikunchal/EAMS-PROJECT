@@ -1,0 +1,23 @@
+managed implementation in class zbp_i_plant1 unique;
+strict ( 2 );
+
+define behavior for ZI_PLANT //alias <alias_name>
+persistent table zeams_plant
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+early numbering
+{
+  create;
+  update;
+  delete;
+  field ( readonly ) plant;
+
+  mapping for zeams_plant corresponding {
+   plant = plant;
+   plant_name = plant_name;
+   plant_type  = plant_type;
+
+  }
+
+}

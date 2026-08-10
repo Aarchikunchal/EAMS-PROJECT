@@ -1,0 +1,17 @@
+managed implementation in class zbp_i_plant_loc unique;
+strict ( 2 );
+
+define behavior for ZI_PLANT_LOC //alias <alias_name>
+persistent table zeams_plant_loc
+lock master
+authorization master ( global )
+//etag master <field_name>
+{
+  create ;
+  update;
+  delete;
+  mapping for zeams_plant_loc corresponding {
+  plant = plant;
+  location = location;
+  }
+}

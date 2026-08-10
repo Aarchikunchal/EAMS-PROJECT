@@ -1,0 +1,99 @@
+managed implementation in class zbp_i_service unique;
+strict ( 2 );
+
+define behavior for ZI_SERVICE //alias <alias_name>
+persistent table zeams_service
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+
+
+  field ( mandatory ) Priority;
+
+  field ( readonly, numbering : managed ) Serviceuuid;
+  field ( readonly ) ServiceId, RequiredService, DateOfCompletion;
+  association _item { create; }
+
+
+
+  validation ValidateDates on save { create; update; }
+  validation ValidatePriority on save { field Priority; }
+  validation ValidateStatus on save { field Status; }
+  validation ValidateAssetId on save { field AssetId; }
+  validation ValidateVendorId on save { field VendorId; }
+
+
+
+  determination SetServiceid on modify { create; }
+  determination SetdefaultDates on modify { create; field Priority; }
+  side effects
+  { field Priority affects field DateOfCompletion;
+    field RequestDate affects field DateOfCompletion; }
+  determination SetRequiredService on modify { field VendorId; }
+  determination SetInitialStatus on modify { create; }
+
+
+  action ( features : instance ) OPEN result [1] $self;
+  action ( features : instance ) INPROGRESS result [1] $self;
+  action ( features : instance ) COMPLETED result [1] $self;
+
+
+
+  mapping for zeams_service
+    {
+      Serviceuuid        = service_uuid;
+      ServiceId          = service_id;
+      AssetId            = asset_id;
+      RequestDate        = request_date;
+      FailureDescription = failure_description;
+      Priority           = priority;
+      Status             = status;
+      RequestedBy        = requested_by;
+      VendorId           = vendor_id;
+      RequiredService    = required_service;
+      DateOfCompletion   = date_of_completion;
+      CreatedAt          = created_at;
+      CreatedBy          = created_by;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}
+
+define behavior for ZI_REPAIR //alias <alias_name>
+persistent table zeams_repair
+lock dependent by _header
+authorization dependent by _header
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly, numbering : managed ) Activityuuid;
+  field ( readonly ) Serviceuuid, ActivityNo;
+  association _header;
+
+  validation SetActivityDone on save { field ActivityDone; }
+
+  determination SetActivityno on modify { create; }
+  determination UpdateServiceStatus on modify { create; field ActivityDone; }
+  side effects { field ActivityDone affects field ServiceUuid; }
+
+
+
+
+  mapping for zeams_repair corresponding
+    {
+      Activityuuid       = activity_uuid;
+      Serviceuuid        = service_uuid;
+      ActivityNo         = activity_no;
+      ActivityDate       = activity_date;
+      ActivityDone       = activity_done;
+      Remark             = remark;
+      CreatedAt          = created_at;
+      CreatedBy          = created_by;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

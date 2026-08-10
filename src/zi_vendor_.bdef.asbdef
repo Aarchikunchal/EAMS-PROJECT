@@ -1,0 +1,40 @@
+managed implementation in class zbp_i_vendor_ unique;
+strict ( 2 );
+
+define behavior for ZI_VENDOR_ //alias <alias_name>
+persistent table zeams_vendor
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+early numbering
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+  field ( mandatory ) ContactNumber, Email, ServiceType, Status;
+
+  determination SetDefaultStatus on modify { create; }
+
+
+  validation ValidateContactNumber on save { create; update; }
+  validation ValidateEmail on save { create; update; }
+
+
+  action ( features : instance ) Active result [1] $self;
+  action ( features : instance ) InActive result [1] $self;
+
+  field ( readonly ) VendorId;
+  mapping for zeams_vendor corresponding
+    {
+      VendorId           = vendor_id;
+      VendorName         = vendor_name;
+      ContactNumber      = contact_number;
+      Email              = email;
+      ServiceType        = service_type;
+      Status             = status;
+      CreatedAt          = created_at;
+      CreatedBy          = created_by;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

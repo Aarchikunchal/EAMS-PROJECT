@@ -1,0 +1,80 @@
+@Metadata.layer: #CORE
+
+ @UI.headerInfo: {
+    typeName: 'Asset',
+    typeNamePlural: 'Assets',
+    title: {
+      value: 'AssetId'
+    },
+    description: {
+      value: 'AssetName'
+    },
+    typeImageUrl: 'sap-icon://add-product'
+  }
+annotate view ZC_EAMS_ASSET with
+{
+ 
+ @UI.facet: [{ id :'AssetInfo' ,purpose: #STANDARD,type: #IDENTIFICATION_REFERENCE,label: 'Assets',position: 10 }]
+
+  @EndUserText.label: 'Asset ID'
+  @UI.lineItem: [{ position: 10, importance: #HIGH }]
+//  @UI.identification: [{ position: 10 }]
+  AssetId;
+
+  @EndUserText.label: 'Asset Name'
+  @UI.lineItem: [{ position: 20, importance: #HIGH }]
+  @UI.identification: [{ position: 20 }]
+  AssetName;
+
+  @EndUserText.label: 'Asset Category'
+  @UI.lineItem: [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  AssetCategory;
+
+  @EndUserText.label: 'Plant'
+  @UI.lineItem: [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  Plant;
+
+  @EndUserText.label: 'Department'
+  @UI.lineItem: [{ position: 50 }]
+  @UI.identification: [{ position: 50 }]
+  Department;
+
+  @EndUserText.label: 'Location'
+  @UI.lineItem: [{ position: 60 }]
+  @UI.identification: [{ position: 60 }]
+  Location;
+
+  @EndUserText.label: 'Manufacturer'
+  @UI.lineItem: [{ position: 70 }]
+  @UI.identification: [{ position: 70 }]
+  Manufacturer;
+
+  @EndUserText.label: 'Purchase Date'
+  @UI.lineItem: [{ position: 80 }]
+  @UI.identification: [{ position: 80 }]
+  PurchaseDate;
+
+  @EndUserText.label: 'Warranty End Date'
+  @UI.lineItem: [{ position: 90 }]
+  @UI.identification: [{ position: 90 }]
+  WarrentyEnd;
+
+  @EndUserText.label: 'Asset Status'
+  @UI.lineItem: [{ position: 100, importance: #HIGH }]
+  @UI.identification: [{ position: 100 }]
+  AssetStatus;
+
+  @EndUserText.label: 'Asset Image URL'
+  @UI.identification: [{ position: 110 }]
+  AssetImageUrl;
+
+@UI.adaptationHidden: true
+  CreatedAt;
+@UI.adaptationHidden: true
+  CreatedBy;
+
+@UI.adaptationHidden: true
+ LocalLastChangedAt;
+}

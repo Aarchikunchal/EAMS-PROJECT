@@ -1,0 +1,50 @@
+managed implementation in class zbp_i_eams_asset unique;
+strict ( 2 );
+
+define behavior for ZI_EAMS_ASSET //alias <alias_name>
+persistent table zeams_asset
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+early numbering
+{
+  create;
+  update;
+  delete;
+
+  field ( readonly ) AssetId, WarrentyEnd;
+  field ( mandatory ) AssetCategory, Plant, Location, PurchaseDate, AssetStatus;
+
+
+  validation ValidateAssetStatus on save { field AssetStatus; }
+  validation ValidateAssetCategory on save { field AssetCategory; }
+  validation ValidateDates on save { create; update; }
+  validation ValidatePlant on save{ field Plant;}
+  validation ValidateLocation on save {field Location;}
+
+  determination SetWarrentyEndDate on modify { create; field PurchaseDate; }
+  side effects
+  {
+    field PurchaseDate affects field WarrentyEnd;
+  }
+
+
+
+  mapping for zeams_asset corresponding
+    {
+      AssetId            = asset_id;
+      AssetName          = asset_name;
+      AssetCategory      = asset_category;
+      Plant              = plant;
+      Department         = department;
+      Location           = location;
+      Manufacturer       = manufacturer;
+      PurchaseDate       = purchase_date;
+      WarrentyEnd        = warrenty_end;
+      AssetStatus        = asset_status;
+      AssetImageUrl      = asset_image_url;
+      CreatedAt          = created_at;
+      CreatedBy          = created_by;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

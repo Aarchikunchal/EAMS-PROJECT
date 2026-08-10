@@ -1,0 +1,35 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName: 'Plant Location',
+  typeNamePlural: 'Plant Locations',
+  title: {
+    value: 'Location'
+  },
+  description: {
+    value: 'Plant'
+  }
+}
+
+annotate view ZC_PLANT_LOC with
+{
+
+  @UI.facet: [{
+    id: 'PlantLocationInfo',
+    type: #IDENTIFICATION_REFERENCE,
+    purpose: #STANDARD,
+    label: 'Plant Location Details',
+    position: 10
+  }]
+
+  @EndUserText.label: 'Plant'
+  @UI.lineItem: [{ position: 10, importance: #HIGH }]
+  @UI.identification: [{ position: 10 }]
+  Plant;
+
+  @EndUserText.label: 'Location'
+  @UI.lineItem: [{ position: 20, importance: #HIGH }]
+  @UI.identification: [{ position: 20 }]
+  Location;
+
+}

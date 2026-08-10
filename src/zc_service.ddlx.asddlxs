@@ -1,0 +1,101 @@
+@Metadata.layer: #CORE
+
+annotate view ZC_SERVICE with
+{
+  @UI.facet: [
+    {
+      id        : 'HEADER',
+      type      : #IDENTIFICATION_REFERENCE,
+      label     : 'Service Details',
+      position  : 10,
+      purpose   : #STANDARD
+    },
+    {
+      id            : 'REPAIR',
+      type          : #LINEITEM_REFERENCE,
+      label         : 'Repair Activities',
+      targetElement : '_item',
+      position      : 20,
+      purpose       : #STANDARD
+    }
+  ]
+
+  @UI.hidden: true 
+  Serviceuuid;
+
+  @EndUserText.label: 'Service ID'
+  @UI.lineItem:       [ { position: 10 } ]
+  @UI.identification: [ { position: 10 } ]
+  ServiceId;
+
+  @EndUserText.label: 'Asset ID'
+  @UI.lineItem:       [ { position: 20 } ]
+  @UI.identification: [ { position: 20 } ]
+  AssetId;
+
+  @EndUserText.label: 'Request Date'
+  @UI.lineItem:       [ { position: 30 } ]
+  @UI.identification: [ { position: 30 } ]
+  RequestDate;
+
+  @EndUserText.label: 'Failure Description'
+  @UI.lineItem:       [ { position: 40 } ]
+  @UI.identification: [ { position: 40 } ]
+  FailureDescription;
+
+  @EndUserText.label: 'Priority'
+  @UI.lineItem:       [ { position: 50 } ]
+  @UI.identification: [ { position: 50 } ]
+  Priority;
+
+  @EndUserText.label: 'Status'
+  @UI.lineItem:       [ { position: 60 } ,
+     {
+      type: #FOR_ACTION,
+      dataAction: 'OPEN',
+      label: 'OPEN',
+      position: 70
+    },
+
+    {
+      type: #FOR_ACTION,
+      dataAction: 'INPROGRESS',
+      label: 'INPROGRESS',
+      position: 80
+    },
+     {
+      type: #FOR_ACTION,
+      dataAction: 'COMPLETED',
+      label: 'COMPLETED',
+      position: 90
+    }]
+  @UI.identification: [ { position: 60 } ]
+  Status;
+
+  @EndUserText.label: 'Requested By'
+  @UI.lineItem:       [ { position: 70 } ]
+  @UI.identification: [ { position: 70 } ]
+  RequestedBy;
+
+  @EndUserText.label: 'Vendor ID'
+  @UI.lineItem:       [ { position: 80 } ]
+  @UI.identification: [ { position: 80 } ]
+  VendorId;
+
+  @EndUserText.label: 'Required Service'
+  @UI.lineItem:       [ { position: 90 } ]
+  @UI.identification: [ { position: 90 } ]
+  RequiredService;
+
+  @EndUserText.label: 'Completion Date'
+  @UI.lineItem:       [ { position: 100 } ]
+  @UI.identification: [ { position: 100 } ]
+  DateOfCompletion;
+
+  @UI.hidden: true
+  CreatedAt;
+
+  @UI.hidden: true
+  CreatedBy;
+
+}

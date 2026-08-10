@@ -1,0 +1,61 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName: 'Plant',
+  typeNamePlural: 'Plants',
+  title: {
+    value: 'Plant'
+  },
+  description: {
+    value: 'plant_name'
+  }
+}
+
+annotate view ZC_PLANT with
+{
+
+  @UI.facet: [{
+    id: 'PlantInfo',
+    purpose: #STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    label: 'Plant Information',
+    position: 10
+  }]
+
+  @EndUserText.label: 'Plant'
+  @UI.lineItem: [
+    { position: 10, importance: #HIGH }
+  ]
+  @UI.identification: [
+    { position: 10 }
+  ]
+  Plant;
+
+  @EndUserText.label: 'Plant Name'
+  @UI.lineItem: [
+    { position: 20, importance: #HIGH }
+  ]
+  @UI.identification: [
+    { position: 20 }
+  ]
+  plant_name;
+
+  @EndUserText.label: 'Plant Type'
+  @UI.lineItem: [
+    { position: 30 }
+  ]
+  @UI.identification: [
+    { position: 30 }
+  ]
+  plant_type;
+
+  @UI.hidden: true
+  CreatedAt;
+
+ @UI.hidden: true
+  CreatedBy;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+
+}
