@@ -3,6 +3,7 @@
 {
 "FROM":
 [
+"ZI_EAMS_ASSET",
 "ZEAMS_SERVICE"
 ],
 "ASSOCIATED":

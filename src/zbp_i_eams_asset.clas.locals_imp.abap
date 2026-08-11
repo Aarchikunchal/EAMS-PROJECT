@@ -7,8 +7,6 @@ CLASS lhc_ZI_EAMS_ASSET DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR zi_eams_asset~validateassetstatus.
     METHODS validateassetcategory FOR VALIDATE ON SAVE
       IMPORTING keys FOR zi_eams_asset~validateassetcategory.
-    METHODS setwarrentyenddate FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR zi_eams_asset~setwarrentyenddate.
     METHODS validatedates FOR VALIDATE ON SAVE
       IMPORTING keys FOR zi_eams_asset~validatedates.
     METHODS validateplant FOR VALIDATE ON SAVE
@@ -133,39 +131,10 @@ ENDMETHOD.
   ENDLOOP.
   ENDMETHOD.
 
-  METHOD SetWarrentyEndDate.
-
-  READ ENTITIES OF zi_eams_asset
-    IN LOCAL MODE
-    ENTITY zi_eams_asset
-    FIELDS ( PurchaseDate WarrentyEnd )
-    WITH CORRESPONDING #( keys )
-    RESULT DATA(lt_asset).
-
-  LOOP AT lt_asset INTO DATA(ls_asset).
-
-    IF ls_asset-PurchaseDate IS NOT INITIAL.
-
-      DATA(lv_warranty_date) = ls_asset-PurchaseDate + 365.
-
-      MODIFY ENTITIES OF zi_eams_asset
-        IN LOCAL MODE
-        ENTITY zi_eams_asset
-        UPDATE FIELDS ( WarrentyEnd )
-        WITH VALUE #(
-          (
-            %tky            = ls_asset-%tky
-            WarrentyEnd = lv_warranty_date
-          )
-        ).
-
-    ENDIF.
-
-  ENDLOOP.
-
-ENDMETHOD.
 
   METHOD ValidateDates.
+
+
 
   DATA(lv_today) = cl_abap_context_info=>get_system_date( ).
 
@@ -178,8 +147,9 @@ ENDMETHOD.
 
   LOOP AT lt_asset INTO DATA(ls_asset).
 
+
     "Purchase date cannot be future
-    IF ls_asset-PurchaseDate > lv_today.
+    IF   ls_asset-PurchaseDate > lv_today.
 
       APPEND VALUE #(
         %tky = ls_asset-%tky
@@ -197,7 +167,7 @@ ENDMETHOD.
     ENDIF.
 
     "Warranty date should be after purchase date
-    IF ls_asset-WarrentyEnd <= ls_asset-PurchaseDate.
+    IF ls_asset-WarrentyEnd is NOT INITIAL and ls_asset-WarrentyEnd <= ls_asset-PurchaseDate.
 
       APPEND VALUE #(
         %tky = ls_asset-%tky

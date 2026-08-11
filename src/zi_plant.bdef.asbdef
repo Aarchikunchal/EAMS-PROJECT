@@ -14,9 +14,13 @@ early numbering
   field ( readonly ) plant;
 
   mapping for zeams_plant corresponding {
-   plant = plant;
-   plant_name = plant_name;
-   plant_type  = plant_type;
+    Plant = plant;
+    plant_name = plant_name;
+    plant_type = plant_type;
+    CreatedAt = created_at;
+    CreatedBy = created_by ;
+    LocalLastChangedAt = local_last_changed_at;
+
 
   }
 

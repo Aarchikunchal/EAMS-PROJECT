@@ -1,3 +1,5 @@
+
+
 CLASS lhc_zi_repair DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
   PRIVATE SECTION.
@@ -7,7 +9,19 @@ CLASS lhc_zi_repair DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS SetActivityDone FOR VALIDATE ON SAVE
       IMPORTING keys FOR zi_repair~SetActivityDone.
     METHODS UpdateServiceStatus FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR ZI_REPAIR~UpdateServiceStatus.
+      IMPORTING keys FOR zi_repair~UpdateServiceStatus.
+    METHODS SetActivityDate FOR VALIDATE ON SAVE
+      IMPORTING keys FOR zi_repair~SetActivityDate.
+    METHODS SetDefaultActivityDone FOR DETERMINE ON MODIFY
+      IMPORTING keys FOR zi_repair~SetDefaultActivityDone.
+    METHODS get_instance_features FOR INSTANCE FEATURES
+      IMPORTING keys REQUEST requested_features FOR ZI_REPAIR RESULT result.
+
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR ZI_REPAIR RESULT result.
+
+    METHODS MarkComplete FOR MODIFY
+      IMPORTING keys FOR ACTION ZI_REPAIR~MarkComplete RESULT result.
 
 ENDCLASS.
 
@@ -83,45 +97,164 @@ CLASS lhc_zi_repair IMPLEMENTATION.
 
   METHOD UpdateServiceStatus.
 
-  READ ENTITIES OF zi_service IN LOCAL MODE
+    READ ENTITIES OF zi_service IN LOCAL MODE
+      ENTITY zi_repair
+      FIELDS ( Serviceuuid ActivityDone )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_activity).
+
+    LOOP AT lt_activity INTO DATA(ls_activity).
+
+        "Activity exists but not completed
+        MODIFY ENTITIES OF zi_service IN LOCAL MODE
+          ENTITY zi_service
+          UPDATE FIELDS ( Status )
+          WITH VALUE #(
+            (
+              %key-Serviceuuid = ls_activity-Serviceuuid
+              Status    = 'INPR'
+            )
+          ).
+
+    ENDLOOP.
+
+  ENDMETHOD.
+
+  METHOD SetActivityDate.
+
+    READ ENTITIES OF zi_service
+      IN LOCAL MODE
+      ENTITY zi_repair
+      FIELDS ( ActivityDate )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_repair).
+
+    LOOP AT lt_repair INTO DATA(ls_repair).
+
+      READ ENTITIES OF zi_service
+        IN LOCAL MODE
+        ENTITY zi_repair BY \_header
+        FIELDS ( RequestDate )
+        WITH VALUE #(
+          ( %tky = ls_repair-%tky )
+        )
+        RESULT DATA(lt_header).
+
+      READ TABLE lt_header INTO DATA(ls_header) INDEX 1.
+
+      IF sy-subrc = 0.
+
+        IF ls_repair-ActivityDate < ls_header-RequestDate.
+
+          APPEND VALUE #(
+            %tky = ls_repair-%tky
+          ) TO failed-zi_repair.
+
+          APPEND VALUE #(
+            %tky = ls_repair-%tky
+            %msg = new_message(
+                     id       = 'ZMSG_SERVICE'
+                     number   = '017'
+                     severity = if_abap_behv_message=>severity-error )
+            %element-ActivityDate = if_abap_behv=>mk-on
+          ) TO reported-zi_repair.
+
+        ENDIF.
+
+      ENDIF.
+
+    ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD SetDefaultActivityDone.
+
+    READ ENTITIES OF zi_service
+      IN LOCAL MODE
+      ENTITY zi_repair
+      FIELDS ( ActivityDone )
+      WITH CORRESPONDING #( keys )
+      RESULT DATA(lt_repair).
+
+    MODIFY ENTITIES OF zi_service
+      IN LOCAL MODE
+      ENTITY zi_repair
+      UPDATE FIELDS ( ActivityDone )
+      WITH VALUE #(
+        FOR ls_repair IN lt_repair
+        WHERE ( ActivityDone IS INITIAL )
+        (
+          %tky         = ls_repair-%tky
+          ActivityDone = 'NO'
+        )
+      ).
+
+  ENDMETHOD.
+
+
+
+  METHOD get_instance_features.
+
+  READ ENTITIES OF zi_service
+    IN LOCAL MODE
     ENTITY zi_repair
-    FIELDS ( Serviceuuid ActivityDone )
+    FIELDS ( ActivityDone )
     WITH CORRESPONDING #( keys )
-    RESULT DATA(lt_activity).
+    RESULT DATA(lt_repair).
 
-  LOOP AT lt_activity INTO DATA(ls_activity).
+  result = VALUE #(
+    FOR ls_repair IN lt_repair
+    (
+      %tky = ls_repair-%tky
 
-    "If Activity Done = YES
-    IF ls_activity-ActivityDone = 'YES'.
+      %action-MarkComplete =
+        COND #(
+          WHEN ls_repair-ActivityDone = 'YES'
+          THEN if_abap_behv=>fc-o-disabled
 
-      MODIFY ENTITIES OF zi_service IN LOCAL MODE
-        ENTITY zi_service
-        UPDATE FIELDS ( Status )
-        WITH VALUE #(
-          (
-            %key-Serviceuuid = ls_activity-Serviceuuid
-            Status    = 'COMP'
-          )
-        ).
-
-    ELSE.
-
-      "Activity exists but not completed
-      MODIFY ENTITIES OF zi_service IN LOCAL MODE
-        ENTITY zi_service
-        UPDATE FIELDS ( Status )
-        WITH VALUE #(
-          (
-            %key-Serviceuuid = ls_activity-Serviceuuid
-            Status    = 'INPR'
-          )
-        ).
-
-    ENDIF.
-
-  ENDLOOP.
+          ELSE if_abap_behv=>fc-o-enabled
+        )
+    )
+  ).
 
 ENDMETHOD.
+
+
+  METHOD get_instance_authorizations.
+  ENDMETHOD.
+
+  METHOD MarkComplete.
+
+  MODIFY ENTITIES OF zi_service
+    IN LOCAL MODE
+    ENTITY zi_repair
+    UPDATE FIELDS ( ActivityDone )
+    WITH VALUE #(
+      FOR key IN keys
+      (
+        %tky         = key-%tky
+        ActivityDone = 'YES'
+      )
+    ).
+
+  READ ENTITIES OF zi_service
+    IN LOCAL MODE
+    ENTITY zi_repair
+    ALL FIELDS
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_result).
+
+  result = VALUE #(
+    FOR ls_result IN lt_result
+    (
+      %tky   = ls_result-%tky
+      %param = ls_result
+    )
+  ).
+
+ENDMETHOD.
+
 
 ENDCLASS.
 
@@ -144,21 +277,15 @@ CLASS lhc_ZI_SERVICE DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR zi_service~ValidateVendorId.
     METHODS SetRequiredService FOR DETERMINE ON MODIFY
       IMPORTING keys FOR zi_service~SetRequiredService.
-    METHODS get_instance_features FOR INSTANCE FEATURES
-      IMPORTING keys REQUEST requested_features FOR zi_service RESULT result.
-
-    METHODS OPEN FOR MODIFY
-      IMPORTING keys FOR ACTION zi_service~OPEN RESULT result.
-
-    METHODS INPROGRESS FOR MODIFY
-      IMPORTING keys FOR ACTION zi_service~INPROGRESS RESULT result.
-
-    METHODS COMPLETED FOR MODIFY
-      IMPORTING keys FOR ACTION zi_service~COMPLETED RESULT result.
     METHODS ValidateDates FOR VALIDATE ON SAVE
       IMPORTING keys FOR zi_service~ValidateDates.
     METHODS SetInitialStatus FOR DETERMINE ON MODIFY
       IMPORTING keys FOR zi_service~SetInitialStatus.
+    METHODS get_instance_features FOR INSTANCE FEATURES
+      IMPORTING keys REQUEST requested_features FOR ZI_SERVICE RESULT result.
+
+    METHODS MarkCompleted FOR MODIFY
+      IMPORTING keys FOR ACTION ZI_SERVICE~MarkCompleted RESULT result.
 
 
 
@@ -454,91 +581,6 @@ CLASS lhc_ZI_SERVICE IMPLEMENTATION.
 
   ENDMETHOD.
 
-
-
-  METHOD get_instance_features.
-    READ ENTITIES OF zi_service
-      ENTITY zi_service
-      FIELDS ( Status )
-      WITH CORRESPONDING #( keys )
-      RESULT DATA(lt_service).
-
-    LOOP AT lt_service INTO DATA(ls_service).
-
-      APPEND VALUE #(
-        %tky = ls_service-%tky
-
-        %action-OPEN =
-          COND #(
-            WHEN 1 = 1
-            THEN if_abap_behv=>fc-o-disabled
-
-          )
-
-        %action-INPROGRESS =
-          COND #(
-            WHEN ls_service-Status = 'OPEN'
-            THEN if_abap_behv=>fc-o-enabled
-            ELSE if_abap_behv=>fc-o-disabled
-          )
-             %action-COMPLETED =
-          COND #(
-            WHEN ls_service-Status = 'OPEN'
-            OR ls_service-Status = 'INPR'
-            THEN if_abap_behv=>fc-o-enabled
-            ELSE if_abap_behv=>fc-o-disabled
-          )
-
-
-      ) TO result.
-
-    ENDLOOP.
-  ENDMETHOD.
-
-  METHOD OPEN.
-
-    MODIFY ENTITIES OF zi_service IN LOCAL MODE
-      ENTITY zi_service
-      UPDATE FIELDS ( Status )
-      WITH VALUE #(
-        FOR key IN keys (
-          %tky   = key-%tky
-          Status = 'OPEN'
-        )
-      ).
-
-  ENDMETHOD.
-
-
-  METHOD INPROGRESS.
-
-    MODIFY ENTITIES OF zi_service IN LOCAL MODE
-      ENTITY zi_service
-      UPDATE FIELDS ( Status )
-      WITH VALUE #(
-        FOR key IN keys (
-          %tky   = key-%tky
-          Status = 'INPR'
-        )
-      ).
-
-  ENDMETHOD.
-
-  METHOD COMPLETED.
-
-    MODIFY ENTITIES OF zi_service IN LOCAL MODE
-      ENTITY zi_service
-      UPDATE FIELDS ( Status )
-      WITH VALUE #(
-        FOR key IN keys (
-          %tky   = key-%tky
-          Status = 'COMP'
-        )
-      ).
-
-  ENDMETHOD.
-
-
   METHOD ValidateDates.
 
     READ ENTITIES OF zi_service IN LOCAL MODE
@@ -586,5 +628,93 @@ CLASS lhc_ZI_SERVICE IMPLEMENTATION.
       ).
 
   ENDMETHOD.
+  METHOD get_instance_features.
+
+*  READ ENTITIES OF zi_service
+*    IN LOCAL MODE
+*    ENTITY zi_service
+*    FIELDS ( Status )
+*    WITH CORRESPONDING #( keys )
+*    RESULT DATA(lt_service).
+*
+*  result = VALUE #(
+*    FOR ls_service IN lt_service
+*    (
+*      %tky = ls_service-%tky
+*
+*      %action-MarkCompleted =
+*        COND #(
+*          WHEN ls_service-Status = 'COMP'
+*          THEN if_abap_behv=>fc-o-disabled
+*          ELSE if_abap_behv=>fc-o-enabled
+*        )
+*    )
+*  ).
+
+  READ ENTITIES OF zi_service
+    IN LOCAL MODE
+    ENTITY zi_service
+    FIELDS ( Status )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_service).
+
+  result = VALUE #(
+    FOR ls_service IN lt_service
+    (
+      %tky = ls_service-%tky
+
+      "Complete Service Button
+      %action-MarkCompleted =
+        COND #(
+          WHEN ls_service-Status = 'COMP'
+          THEN if_abap_behv=>fc-o-disabled
+          ELSE if_abap_behv=>fc-o-enabled
+        )
+
+      "Create Repair Activity
+      %assoc-_item =
+        COND #(
+          WHEN ls_service-Status = 'COMP'
+          THEN if_abap_behv=>fc-o-disabled
+          ELSE if_abap_behv=>fc-o-enabled
+        )
+    )
+  ).
+
+
+ENDMETHOD.
+
+
+  METHOD MarkCompleted.
+
+  MODIFY ENTITIES OF zi_service
+    IN LOCAL MODE
+    ENTITY zi_service
+    UPDATE FIELDS ( Status )
+    WITH VALUE #(
+      FOR key IN keys
+      (
+        %tky   = key-%tky
+        Status = 'COMP'
+      )
+    ).
+
+  READ ENTITIES OF zi_service
+    IN LOCAL MODE
+    ENTITY zi_service
+    ALL FIELDS
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_result).
+
+  result = VALUE #(
+    FOR ls_result IN lt_result
+    (
+      %tky   = ls_result-%tky
+      %param = ls_result
+    )
+  ).
+
+ENDMETHOD.
+
 
 ENDCLASS.

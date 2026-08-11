@@ -8,3 +8,5 @@ define view entity zvh_asset_id
   asset_status as AssetStatus
 
 }
+where asset_status <> 'RET' 
+and asset_status <> 'SCR'
