@@ -38,6 +38,7 @@ define root view entity ZC_EAMS_ASSET
 
       }} ]
       AssetStatus,
+      @Semantics.imageUrl: true
       AssetImageUrl,
       CreatedAt,
       CreatedBy,

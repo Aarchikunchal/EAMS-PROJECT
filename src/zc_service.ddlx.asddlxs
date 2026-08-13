@@ -1,5 +1,16 @@
 @Metadata.layer: #CORE
-
+@UI.headerInfo: {
+  typeName: 'Service',
+  typeNamePlural: 'Services',
+  title: {
+    type: #STANDARD,
+    value: 'ServiceId'
+  },
+  description: {
+    value: 'AssetId'
+  },
+  imageUrl: 'AssetImageUrl'
+}
 annotate view ZC_SERVICE with
 {
   @UI.facet: [
@@ -20,7 +31,7 @@ annotate view ZC_SERVICE with
     }
   ]
 
-  @UI.hidden: true 
+  @UI.hidden: true
   Serviceuuid;
 
   @EndUserText.label: 'Service ID'
@@ -41,6 +52,7 @@ annotate view ZC_SERVICE with
   @EndUserText.label: 'Failure Description'
   @UI.lineItem:       [ { position: 40 } ]
   @UI.identification: [ { position: 40 } ]
+  @UI.multiLineText: true
   FailureDescription;
 
   @EndUserText.label: 'Priority'
@@ -49,27 +61,14 @@ annotate view ZC_SERVICE with
   Priority;
 
   @EndUserText.label: 'Status'
-  @UI.lineItem:       [ { position: 60 } ,
-     {
-      type: #FOR_ACTION,
-      dataAction: 'OPEN',
-      label: 'OPEN',
-      position: 70
-    },
-
-    {
-      type: #FOR_ACTION,
-      dataAction: 'INPROGRESS',
-      label: 'INPROGRESS',
-      position: 80
-    },
-     {
-      type: #FOR_ACTION,
-      dataAction: 'COMPLETED',
-      label: 'COMPLETED',
-      position: 90
-    }]
-  @UI.identification: [ { position: 60 } ]
+  @UI.lineItem:       [ { position: 60 },
+  {
+  type: #FOR_ACTION,
+  dataAction: 'MarkCompleted',
+  label: 'MarkCompleted',
+  position: 100
+  }]
+  @UI.identification: [ { position: 60 }]
   Status;
 
   @EndUserText.label: 'Requested By'
@@ -91,6 +90,9 @@ annotate view ZC_SERVICE with
   @UI.lineItem:       [ { position: 100 } ]
   @UI.identification: [ { position: 100 } ]
   DateOfCompletion;
+
+//  @UI.identification: [{ position: 110 }]
+//  AssetImageUrl;
 
   @UI.hidden: true
   CreatedAt;

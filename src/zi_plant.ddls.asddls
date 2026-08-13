@@ -1,18 +1,23 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'INTERFACE PLANT'
+@EndUserText.label: 'Plant'
 @Metadata.ignorePropagatedAnnotations: true
-@Metadata.allowExtensions: true
-define root view entity ZI_PLANT as select from zeams_plant
-
+define view entity ZI_PLANT
+  as select from zplant as _Plant
+  association to ZI_SALE_ORDER as _Order on $projection.Vbeln = _Plant.vbeln
+  association to ZI_SALE_ORDER_ITEM as _Item on $projection.Vbeln = _Plant.vbeln
+  association to parent ZI_MATERIAL as _Material on $projection.Matnr = _Material.Matnr
+                                                 and $projection.Vbeln = _Material.Vbeln 
+                                                 and $projection.Posnr = _Material.Posnr
 {
-    key plant as Plant,
-    plant_name as plant_name,
-    plant_type as plant_type,
-    created_at as CreatedAt,
-    created_by as CreatedBy,
-    local_last_changed_at as LocalLastChangedAt
-    
+  key werks as Werks,
+      matnr as Matnr,
+      vbeln as Vbeln,
+      posnr as Posnr,
+      erdat as Erdat,
+      ernam as Ernam,
+      name  as Name,
+
+      _Material,
+      _Order,
+      _Item
 }
-
-
-

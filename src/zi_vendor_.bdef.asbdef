@@ -12,7 +12,9 @@ early numbering
   update;
   delete;
 
-  field ( mandatory ) ContactNumber, Email, ServiceType, Status;
+  field ( mandatory ) ContactNumber, Email, ServiceType,VendorName;
+  field ( readonly )Status;
+
 
   determination SetDefaultStatus on modify { create; }
 

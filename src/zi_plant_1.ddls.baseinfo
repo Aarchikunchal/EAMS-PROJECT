@@ -3,15 +3,10 @@
 {
 "FROM":
 [
-"ZI_EAMS_ASSET",
-"ZEAMS_SERVICE"
+"ZEAMS_PLANT"
 ],
 "ASSOCIATED":
-[
-"ZI_EAMS_ASSET",
-"ZI_REPAIR",
-"ZI_VENDOR_"
-],
+[],
 "BASE":
 [],
 "ANNO_REF":

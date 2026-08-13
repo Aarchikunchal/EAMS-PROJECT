@@ -1,8 +1,17 @@
 @Metadata.layer: #CORE
 
-
-annotate entity zc_repair
-with
+@UI.headerInfo: {
+  typeName: 'Repair Activity',
+  typeNamePlural: 'Repair Activities',
+  title: {
+    type: #STANDARD,
+    value: 'ActivityNo'
+  },
+  description: {
+    value: 'Remark'
+  }
+}
+annotate entity zc_repair with
 {
 
   @UI.facet: [
@@ -26,7 +35,11 @@ with
 
   @EndUserText.label: 'Activity Performed'
   @UI.identification: [ { position: 30, label: 'Activity Done' } ]
-  @UI.lineItem:       [ { position: 30, label: 'Activity Done' } ]
+  @UI.lineItem:       [ { position: 30, label: 'Activity Done' },
+  { type :#FOR_ACTION,
+  dataAction: 'MarkComplete',
+  label: 'MarkComplete',
+  position: 80} ]
   ActivityDone;
 
   @EndUserText.label: 'Remark'
@@ -34,10 +47,10 @@ with
   @UI.lineItem:       [ { position: 40, label: 'Remark' } ]
   Remark;
 
-@UI.hidden: true
+  @UI.hidden: true
   CreatedAt;
 
-@UI.hidden: true
+  @UI.hidden: true
   CreatedBy;
 
 }

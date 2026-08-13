@@ -11,7 +11,7 @@
   }
 }
 
-annotate view ZC_PLANT with
+annotate view ZC_PLANT_1 with
 {
 
   @UI.facet: [{

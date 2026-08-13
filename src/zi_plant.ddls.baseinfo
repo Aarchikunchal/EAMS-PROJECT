@@ -3,10 +3,14 @@
 {
 "FROM":
 [
-"ZEAMS_PLANT"
+"ZPLANT"
 ],
 "ASSOCIATED":
-[],
+[
+"ZI_MATERIAL",
+"ZI_SALE_ORDER",
+"ZI_SALE_ORDER_ITEM"
+],
 "BASE":
 [],
 "ANNO_REF":

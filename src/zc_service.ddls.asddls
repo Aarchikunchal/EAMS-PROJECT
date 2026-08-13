@@ -44,6 +44,9 @@ define root view entity ZC_SERVICE as projection on ZI_SERVICE
     LocalLastChangedAt,
     /* Associations */
     _asset : redirected to ZC_EAMS_ASSET,
+    @Semantics.imageUrl: true
+    _asset.AssetImageUrl as AssetImageUrl,
     _item : redirected to composition child zc_repair,
     _vendor : redirected to ZC_VENDOR_
+    
 }

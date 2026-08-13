@@ -3,6 +3,7 @@
 {
 "FROM":
 [
+"ZI_EAMS_ASSET",
 "ZI_SERVICE"
 ],
 "ASSOCIATED":

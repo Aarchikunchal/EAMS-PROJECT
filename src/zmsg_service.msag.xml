@@ -104,6 +104,12 @@
      <MSGNR>016</MSGNR>
      <TEXT> Asset status &apos;&amp;1&apos; is not allowed for service request creation.</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZMSG_SERVICE</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Activity Date should be equal or greater than Requested date.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
