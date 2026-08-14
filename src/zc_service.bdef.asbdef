@@ -6,9 +6,7 @@ define behavior for ZC_SERVICE //alias <alias_name>
   use create;
   use update;
   use delete;
- use action OPEN;
- use action INPROGRESS;
- use action COMPLETED;
+  use action MarkCompleted;
 
 
   use association _item { create; }
@@ -18,6 +16,8 @@ define behavior for zc_repair //alias <alias_name>
 {
   use update;
   use delete;
+
+  use action MarkComplete;
 
   use association _header;
 }

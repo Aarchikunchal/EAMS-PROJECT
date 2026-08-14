@@ -32,4 +32,30 @@ annotate view ZC_PLANT_LOC with
   @UI.identification: [{ position: 20 }]
   Location;
 
+  @EndUserText.label: '  LocationName'
+  @UI.lineItem: [{ position: 30, importance: #HIGH }]
+  @UI.identification: [{ position: 30 }]
+  LocationName;
+
+  @EndUserText.label:  'BuildingCode'
+  @UI.lineItem: [{ position: 40, importance: #HIGH }]
+  @UI.identification: [{ position: 40 }]
+  BuildingCode;
+
+
+  @EndUserText.label: 'FloorNumber'
+  @UI.lineItem: [{ position: 50, importance: #HIGH }]
+  @UI.identification: [{ position: 50 }]
+  FloorNumber;
+
+  @EndUserText.label: 'Capacity'
+  @UI.lineItem: [{ position: 60, importance: #HIGH }]
+  @UI.identification: [{ position: 60 }]
+  Capacity;
+
+  @EndUserText.label: 'Supervisior'
+  @UI.lineItem: [{ position: 70, importance: #HIGH }]
+  @UI.identification: [{ position: 70 }]
+  Supervisior;
+
 }

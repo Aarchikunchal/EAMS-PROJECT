@@ -23,5 +23,6 @@ association to ZI_EAMS_ASSET as _asset on $projection.AssetId = _asset.AssetId
     local_last_changed_at as LocalLastChangedAt,
     _item ,
     _vendor,
-    _asset
+    _asset,
+    _asset.AssetImageUrl as AssetImageUrl
 }

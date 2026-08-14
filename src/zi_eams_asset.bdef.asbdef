@@ -12,8 +12,8 @@ early numbering
   update;
   delete;
 
-  field ( readonly ) AssetId, WarrentyEnd;
-  field ( mandatory ) AssetCategory, Plant, Location, PurchaseDate, AssetStatus;
+  field ( readonly ) AssetId;
+  field ( mandatory ) AssetCategory, Plant, Location, PurchaseDate, AssetStatus,AssetName;
 
 
   validation ValidateAssetStatus on save { field AssetStatus; }
@@ -21,13 +21,6 @@ early numbering
   validation ValidateDates on save { create; update; }
   validation ValidatePlant on save{ field Plant;}
   validation ValidateLocation on save {field Location;}
-
-  determination SetWarrentyEndDate on modify { create; field PurchaseDate; }
-  side effects
-  {
-    field PurchaseDate affects field WarrentyEnd;
-  }
-
 
 
   mapping for zeams_asset corresponding

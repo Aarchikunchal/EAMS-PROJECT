@@ -1,10 +1,10 @@
 @EndUserText.label: 'srv def asset'
 define service ZUI_ASSET_V2 {
   expose ZC_EAMS_ASSET;
-  expose ZC_PLANT;
-  expose ZC_PLANT_LOC;
   expose zvh_plant;
   expose ZC_VENDOR_;
   expose zc_repair;
   expose ZC_SERVICE;
+  expose ZC_PLANT_1;
+  expose ZC_PLANT_LOC;
 }

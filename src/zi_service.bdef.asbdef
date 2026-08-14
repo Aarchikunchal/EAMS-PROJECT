@@ -12,12 +12,15 @@ etag master LocalLastChangedAt
   delete;
 
 
-  field ( mandatory ) Priority;
+  field ( mandatory ) AssetId, VendorId, RequestDate;
+  field ( readonly : update ) Priority;
 
   field ( readonly, numbering : managed ) Serviceuuid;
-  field ( readonly ) ServiceId, RequiredService, DateOfCompletion;
-  association _item { create; }
+  field ( readonly ) ServiceId, RequiredService, DateOfCompletion, Status;
 
+  association _item { create (features : instance); }
+
+  action (features : instance ) MarkCompleted result [1] $self;
 
 
   validation ValidateDates on save { create; update; }
@@ -30,17 +33,15 @@ etag master LocalLastChangedAt
 
   determination SetServiceid on modify { create; }
   determination SetdefaultDates on modify { create; field Priority; }
+
   side effects
   { field Priority affects field DateOfCompletion;
-    field RequestDate affects field DateOfCompletion; }
+    field RequestDate affects field DateOfCompletion;}
+
+
+
   determination SetRequiredService on modify { field VendorId; }
   determination SetInitialStatus on modify { create; }
-
-
-  action ( features : instance ) OPEN result [1] $self;
-  action ( features : instance ) INPROGRESS result [1] $self;
-  action ( features : instance ) COMPLETED result [1] $self;
-
 
 
   mapping for zeams_service
@@ -71,18 +72,24 @@ etag master LocalLastChangedAt
   update;
   delete;
 
+  field ( mandatory ) Remark;
+  field ( readonly : update ) ActivityDate;
   field ( readonly, numbering : managed ) Activityuuid;
-  field ( readonly ) Serviceuuid, ActivityNo;
+  field ( readonly ) Serviceuuid, ActivityNo,ActivityDone;
   association _header;
 
   validation SetActivityDone on save { field ActivityDone; }
+  validation SetActivityDate on save { create; }
 
   determination SetActivityno on modify { create; }
-  determination UpdateServiceStatus on modify { create; field ActivityDone; }
-  side effects { field ActivityDone affects field ServiceUuid; }
 
+  side effects { field ActivityDone affects field ServiceUuid,field _header.Status; }
 
+  determination SetDefaultActivityDone on modify { create; }
+  determination UpdateHeaderStatus on modify { field ActivityDone; }
 
+  action ( features : instance ) MarkComplete
+  result [1] $self;
 
   mapping for zeams_repair corresponding
     {

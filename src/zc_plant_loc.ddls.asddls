@@ -2,8 +2,7 @@
 @EndUserText.label: 'CONSUMPTION OF PLANT AND LOC'
 @Metadata.ignorePropagatedAnnotations: true
 @Metadata.allowExtensions: true
-define root view entity ZC_PLANT_LOC
-  as projection on ZI_PLANT_LOC
+define root view entity ZC_PLANT_LOC as projection on ZI_PLANT_LOC
 {
       @Consumption.valueHelpDefinition: [{
       entity:{
@@ -11,7 +10,11 @@ define root view entity ZC_PLANT_LOC
           element: 'Plant'
       }
        }]
-  key Plant,
-  key Location
-
+    key Plant,
+    key Location,
+    LocationName,
+    BuildingCode,
+    FloorNumber,
+    Supervisior,
+    Capacity
 }

@@ -10,8 +10,15 @@ authorization master ( global )
   create ;
   update;
   delete;
+  field (readonly : update)Plant;
+  field ( mandatory )LocationName,BuildingCode,FloorNumber,Supervisior;
   mapping for zeams_plant_loc corresponding {
   plant = plant;
   location = location;
-  }
+   LocationName = location_name;
+    BuildingCode = building_code;
+    FloorNumber = floor_number;
+    Supervisior = supervisior;
+    Capacity = capacity;
+}
 }

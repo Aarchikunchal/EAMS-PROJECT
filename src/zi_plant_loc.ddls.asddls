@@ -7,5 +7,11 @@ as select from zeams_plant_loc
 {
 
     key plant as Plant,
-    key location as Location
+    key location as Location,
+   location_name as LocationName,
+  building_code as BuildingCode,
+  floor_number  as FloorNumber,
+  supervisior as Supervisior,
+  capacity  as Capacity
+    
 }

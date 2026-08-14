@@ -1,19 +1,20 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
-@EndUserText.label: 'CONSUMPTION VIEW OF PLANT'
+@EndUserText.label: 'Plant'
 @Metadata.ignorePropagatedAnnotations: true
 @Metadata.allowExtensions: true
-define root view entity ZC_PLANT as projection on ZI_PLANT
+define view entity ZC_Plant
+  as projection on ZI_PLANT
 {
- @Consumption.valueHelpDefinition: [{
-      entity:{
-          name: 'zvh_plant',
-          element: 'Plant'
-      }
-       }]
-    key Plant,
-    plant_name,
-    plant_type,
-    CreatedAt,
-    CreatedBy,
-    LocalLastChangedAt
+  key Werks,
+      Matnr,
+      Vbeln,
+      Posnr,
+      Erdat,
+      Ernam,
+      Name,
+
+      /* Associations */
+      _Item     : redirected to ZC_SALE_ORDER_ITEM,
+      _Material : redirected to parent ZC_MATERIAL,
+      _Order    : redirected to ZC_SALE_ORDER
 }

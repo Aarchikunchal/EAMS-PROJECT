@@ -9,7 +9,7 @@
     description: {
       value: 'AssetName'
     },
-    typeImageUrl: 'sap-icon://add-product'
+     imageUrl: 'AssetImageUrl'
   }
 annotate view ZC_EAMS_ASSET with
 {
